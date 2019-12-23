@@ -7,12 +7,12 @@ const server = http.createServer((req, res) => {
     if (url === '/') {
         res.write('<html>');
         res.write('<head><title>message</title></head>');
-        res.write('<body><form action="/message" method="POST"><input type="text" name="message to Grawie"></form></body></html>');
+        res.write('<body><form action="/message" action="/message" method="POST"><input type="text" name="secret message"><button type="submit" name = "submit">Submit</button></form></body></html>');
         return res.end();
     }
 
     if (url === '/message' && method === 'POST'){
-        fs.writeFileSync('message.txt', 'You typed a message for Grawie');
+        fs.writeFileSync('message.txt', 'You typed a secret message');
         res.statusCode = 302;
         res.setHeader('Location', '/');
         return res.end();
