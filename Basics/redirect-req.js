@@ -7,12 +7,21 @@ const server = http.createServer((req, res) => {
     if (url === '/') {
         res.write('<html>');
         res.write('<head><title>message</title></head>');
-        res.write('<body><form action="/message" action="/message" method="POST"><input type="text" name="secret message"><button type="submit" name = "submit">Submit</button></form></body></html>');
+        res.write('<body><form action="/message" action="/message" method="POST"><input type="text" name="secret message"><button type="submit">Submit</button></form></body></html>');
         return res.end();
     }
 
     if (url === '/message' && method === 'POST'){
-        fs.writeFileSync('message.txt', 'You typed a secret message');
+        const body = [];
+        req.on('data', (chunk) => {
+            console.log(chunk);
+            body.push(chunk);
+        });
+        req.on('end', () => {
+            const parsedBody = Buffer.concat(body).toString();
+            const secretMessage = parsedBody.split('=')[1];
+            fs.writeFileSync('Basics/message.txt', secretMessage);
+        });
         res.statusCode = 302;
         res.setHeader('Location', '/');
         return res.end();
