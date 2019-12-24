@@ -20,10 +20,11 @@ const server = http.createServer((req, res) => {
         return req.on('end', () => {
             const parsedBody = Buffer.concat(body).toString();
             const secretMessage = parsedBody.split('=')[1];
-            fs.writeFileSync('Basics/message.txt', secretMessage);
-            res.statusCode = 302;
-            res.setHeader('Location', '/');
-            return res.end();
+            fs.writeFile('Basics/message.txt', secretMessage, (err) => {
+                res.statusCode = 302;
+                res.setHeader('Location', '/');
+                return res.end();
+            });
         });
     }
     res.setHeader('Content-Type', 'text/html');
